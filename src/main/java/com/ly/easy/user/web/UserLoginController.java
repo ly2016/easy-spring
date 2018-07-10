@@ -2,45 +2,58 @@ package com.ly.easy.user.web;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.ly.easy.user.dto.User;
 import com.ly.easy.user.service.UserHelloService;
 
-@RestController
-@EnableAutoConfiguration
-@ComponentScan
+//@RestController
+/*@EnableAutoConfiguration
+@ComponentScan*/
+@Controller
 @RequestMapping("/user/")
 public class UserLoginController {
-
+	
+	private static final Logger LOG = LoggerFactory.getLogger(UserLoginController.class);
 	@Autowired
 	private UserHelloService userHelloService;
 
 	@RequestMapping("hello")
 	@ResponseBody
 	public String helloToFirstMeet() {
+		LOG.info("hello");
 		return "hello";
 	}
 
-	@RequestMapping("saveInfo")
+	@RequestMapping(value = "saveInfo", method = RequestMethod.GET)
 	@ResponseBody
-	public int savaUserInfo() {
+	public String savaUserInfo(@Param(value = "age") int age, @Param(value = "name") String name) {
 		User user = new User();
-		user.setAge(18);
-		user.setUserName("赵日天");
-		int res = userHelloService.save(user);
-		return res;
+		user.setAge(age);
+		user.setUserName(name);
+		userHelloService.save(user);
+		return user.toString();
 	}
 
 	@RequestMapping("queryInfo")
 	@ResponseBody
 	public List<User> queryAll() {
 		return userHelloService.queryAll();
+	}
+
+	@RequestMapping("getUsers")
+	public String listStudent(Model model) {
+		List<User> users = userHelloService.queryAll();
+		model.addAttribute("users", users);
+		return "showUser";
 	}
 
 }
