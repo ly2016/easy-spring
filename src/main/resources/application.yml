@@ -2,8 +2,8 @@ spring:
   datasource:
     name: easy_spring
     url: jdbc:mysql://120.79.233.202:3306/enjoydb?useSSL=true
-    username: root
-    password: liuwanmsy2mysql
+    username: 账户
+    password: 密码
     driver-class-name: com.mysql.jdbc.Driver
   mvc:
     view:
@@ -18,11 +18,3 @@ server:
 mybatis:
   mapper-locations: classpath:mapper/UserMapper.xml,classpath:mapper/StudentMapper.xml
 
-
-
-
-
-
-## jsp ##
-#spring.mvc.view.prefix : /pages/
-#spring.mvc.view.suffix : .jsp  
